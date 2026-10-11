@@ -1,6 +1,6 @@
 {
-  "name": "计算机网络技术2604班 · 智能课表",
-  "short_name": "2604课表",
+  "name": "计算机网络技术2604班",
+  "short_name": "2604班",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#eaeaf7",
