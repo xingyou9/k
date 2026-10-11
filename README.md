@@ -43,3 +43,5 @@
 ## 部署
 
 纯静态单文件，`index.html` 由 GitHub Pages 托管，无构建步骤、无外部依赖。
+
+更新方式：修改本地课表 HTML 后执行 `python deploy/push-to-github.py`。
