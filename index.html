@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>计算机网络技术2604班 · 智能课表</title>
 <meta name="x-kebiao-deploy" content="1">
-<meta name="description" content="计算机网络技术2604班智能课表 · 单双周自动切换、今日时间轴、课时统计、收藏搜索，手机与电脑自适应。">
+<meta name="description" content="计算机网络技术2604班智能课表 · 下节课秒级倒计时、已上/剩余学时记录、单双周自动切换、今日时间轴、学时统计，手机与电脑自适应。">
 <meta name="format-detection" content="telephone=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="2604课表">
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="2604班智能课表">
 <meta property="og:title" content="计算机网络技术2604班 · 智能课表">
-<meta property="og:description" content="单双周自动识别 · 今日课程时间轴 · 学时统计 · 收藏与搜索，随时随地打开即用。">
+<meta property="og:description" content="下节课倒计时到秒 · 已上/剩余学时一目了然 · 单双周自动识别 · 今日课程时间轴，随时随地打开即用。">
 <meta property="og:url" content="https://xingyou9.github.io/kebiao/">
 <meta name="twitter:card" content="summary">
 
@@ -135,17 +135,7 @@ input{font:inherit;color:inherit}
 }
 .nav.scrolled{background:var(--glass);box-shadow:0 8px 30px -18px rgba(16,32,64,.45)}
 .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px;min-height:var(--nav-h)}
-.brand{display:flex;align-items:center;gap:11px;min-width:0;flex:1}
-.brand-logo{
-  width:38px;height:38px;border-radius:13px;flex:none;display:grid;place-items:center;
-  font-weight:800;font-size:14px;letter-spacing:-.3px;color:#fff;
-  background:linear-gradient(150deg,#3b8bff,#7a5cff 55%,#b06cff);
-  box-shadow:0 8px 20px -8px rgba(90,110,255,.85),inset 0 1px 0 rgba(255,255,255,.5);
-}
-.brand-text{min-width:0}
-.brand-title{font-size:14.5px;font-weight:700;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand-sub{font-size:11.5px;color:var(--text-2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
-.nav-actions{display:flex;gap:8px;flex:none}
+.nav-actions{display:flex;gap:8px;flex:none;margin-left:auto}
 .icon-btn{
   width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none;
   background:var(--glass-2);border:1px solid var(--stroke);color:var(--text-2);
@@ -248,6 +238,7 @@ main{max-width:1200px;margin:0 auto;padding:16px 14px 0}
 }
 .cell.slot{place-items:center;font-size:12px;font-weight:700;color:var(--text-2);background:transparent;border:0;border-right:1px dashed var(--line);border-radius:0}
 .cell.slot .st{display:block;font-size:10px;font-weight:600;color:var(--text-3);margin-top:3px;font-variant-numeric:tabular-nums}
+.cell.slot .st.et{color:var(--text-3);opacity:.68;margin-top:1px}
 .cell.meta{place-items:stretch}
 .meta-item{
   display:flex;align-items:center;justify-content:center;text-align:center;
@@ -367,7 +358,37 @@ button.meta-item:hover{color:var(--accent);background:var(--accent-soft)}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,199,89,.55)}70%{box-shadow:0 0 0 12px rgba(52,199,89,0)}100%{box-shadow:0 0 0 0 rgba(52,199,89,0)}}
 .cd-text{font-size:13.5px;font-weight:700}
 .cd-text em{font-style:normal;color:var(--accent);font-variant-numeric:tabular-nums}
-.cd-name{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--text-2)}
+.cd-main{min-width:0;flex:1 1 200px}
+.cd-name{margin-top:4px;font-size:12.5px;font-weight:700;color:var(--text-2);display:block}
+.cd-clock{margin-left:auto;text-align:right;flex:none}
+.cd-timer{display:block;font-size:25px;font-weight:800;letter-spacing:.8px;font-variant-numeric:tabular-nums;color:var(--accent);line-height:1.06}
+.cd-timer.off{color:var(--text-3);opacity:.5}
+.cd-unit{display:block;font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:3px;margin-top:2px}
+@media(max-width:420px){.cd-timer{font-size:21px}.cd-unit{letter-spacing:2px}}
+
+/* ============ 学时进度 ============ */
+.prog-head{display:flex;align-items:center;gap:14px;margin-top:6px}
+.prog-num{text-align:center;flex:none;min-width:84px}
+.prog-num b{display:block;font-size:25px;font-weight:800;letter-spacing:-.6px;font-variant-numeric:tabular-nums;color:#2fbf5f;line-height:1.15}
+.prog-num.r b{color:#ff9f0a}
+.prog-num span{font-size:11px;font-weight:700;color:var(--text-3)}
+.prog-track{position:relative;flex:1;height:14px;border-radius:9px;background:var(--line-soft);border:1px solid var(--stroke);overflow:hidden}
+.prog-track i{position:absolute;left:0;top:0;bottom:0;display:block;width:0;border-radius:9px;background:linear-gradient(90deg,#3b8bff,#2fbf5f);transition:width .8s var(--spring)}
+.prog-track.big{height:16px;flex:none;width:100%}
+.prog-mini{display:flex;justify-content:space-between;gap:12px;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--text-2);flex-wrap:wrap}
+.prog-mini b{color:var(--text);font-variant-numeric:tabular-nums}
+.prog-list{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:9px}
+.pl-row{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:var(--r-sm);background:var(--glass-2);border:1px solid var(--stroke)}
+.pl-dot{width:9px;height:9px;border-radius:3px;flex:none;background:rgb(var(--rgb))}
+.pl-name{font-size:12.5px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-bar{position:relative;width:70px;height:6px;border-radius:4px;background:var(--line-soft);flex:none;overflow:hidden}
+.pl-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:rgb(var(--rgb))}
+.pl-val{font-size:11.5px;font-weight:700;color:var(--text-3);flex:none;font-variant-numeric:tabular-nums}
+@media(max-width:560px){
+  .prog-num{min-width:66px}
+  .prog-num b{font-size:21px}
+  .prog-head{gap:10px}
+}
 
 /* 时间轴 */
 .tl-wrap{position:relative;padding-left:58px;margin-top:4px}
@@ -606,13 +627,6 @@ body.anim-safe .toast{animation:none !important;opacity:1 !important;transform:n
 <!-- ============ 顶部导航 ============ -->
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <div class="brand">
-      <div class="brand-logo">26</div>
-      <div class="brand-text">
-        <div class="brand-title" id="brand-title">计算机网络技术2604班</div>
-        <div class="brand-sub" id="brand-sub">—</div>
-      </div>
-    </div>
     <div class="seg" id="seg">
       <span class="seg-thumb" id="seg-thumb"></span>
       <button data-act="tab" data-view="schedule" class="active" data-ico>课表</button>
@@ -680,8 +694,25 @@ body.anim-safe .toast{animation:none !important;opacity:1 !important;transform:n
       </div>
       <div class="countdown" id="countdown">
         <span class="cd-dot"></span>
-        <span class="cd-text" id="cd-text">加载中…</span>
-        <span class="cd-name" id="cd-name"></span>
+        <div class="cd-main">
+          <span class="cd-text" id="cd-text">加载中…</span>
+          <span class="cd-name" id="cd-name"></span>
+        </div>
+        <div class="cd-clock" id="cd-clock">
+          <span class="cd-timer" id="cd-timer">--:--:--</span>
+          <span class="cd-unit">时 : 分 : 秒</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel glass" style="margin-top:14px">
+      <div class="panel-title"><span class="ico" data-ico="check"></span>学时进度<span class="sub" id="prog-sub2">—</span></div>
+      <div class="prog-track big"><i id="prog-fill2"></i></div>
+      <div class="prog-mini">
+        <span>已上 <b id="prog-done2">0</b> 学时</span>
+        <span>剩余 <b id="prog-left2">0</b> 学时</span>
+        <span>总 <b id="prog-all2">0</b> 学时</span>
+        <span>完成 <b id="prog-pct2">0%</b></span>
       </div>
     </div>
 
@@ -701,6 +732,19 @@ body.anim-safe .toast{animation:none !important;opacity:1 !important;transform:n
   <!-- ============ 统计 ============ -->
   <section class="view" id="view-stats">
     <div class="stat-grid" id="stat-cards"></div>
+    <div class="panel glass" style="margin-top:14px">
+      <div class="panel-title"><span class="ico" data-ico="check"></span>学时进度 · 已上 / 剩余<span class="sub" id="prog-sub">—</span></div>
+      <div class="prog-head">
+        <div class="prog-num"><b id="prog-done">0</b><span>已上学时</span></div>
+        <div class="prog-track"><i id="prog-fill"></i></div>
+        <div class="prog-num r"><b id="prog-left">0</b><span>剩余学时</span></div>
+      </div>
+      <div class="prog-mini" style="justify-content:flex-start;gap:18px">
+        <span>整学期总学时 <b id="prog-all">0</b></span>
+        <span>完成进度 <b id="prog-pct">0%</b></span>
+      </div>
+      <div class="prog-list" id="prog-list"></div>
+    </div>
     <div class="panel glass" style="margin-top:14px">
       <div class="panel-title"><span class="ico" data-ico="pie"></span>课程学时占比<span class="sub" id="pie-sub"></span></div>
       <div class="donut-wrap">
@@ -755,6 +799,14 @@ body.anim-safe .toast{animation:none !important;opacity:1 !important;transform:n
     </div>
 
     <div class="panel glass" style="margin-top:14px">
+      <div class="panel-title"><span class="ico" data-ico="clock"></span>学校作息时间</div>
+      <div class="note" style="margin-bottom:12px">
+        日照科技职业学院 · 上午预备铃 <b>08:00</b>，下午预备铃 <b>13:55</b>，晚自习 <b>19:30 - 20:40</b>。
+      </div>
+      <div class="time-pairs" id="bell-grid"></div>
+    </div>
+
+    <div class="panel glass" style="margin-top:14px">
       <div class="panel-title"><span class="ico" data-ico="share"></span>导出与分享</div>
       <div class="btn-row">
         <button class="btn" data-act="copy">复制课表文本</button>
@@ -769,9 +821,12 @@ body.anim-safe .toast{animation:none !important;opacity:1 !important;transform:n
     <div class="panel glass" style="margin-top:14px">
       <div class="panel-title"><span class="ico" data-ico="info"></span>数据说明与重置</div>
       <div class="note">
-        • 本课表依据班级课程表图片录入，共 <b id="nc-count">0</b> 门课程、<b id="nt-count">0</b> 位教师。<br>
-        • 星期四第 5-8 节及星期三第 5-8 节在原表中以<b>黄色底纹</b>标记但未填写课程，已按「待定」呈现，可点击自行补录。<br>
-        • 理论课 / 实训课上课地点在原表中为空白，点击任意地点格即可填写，数据仅保存在本机浏览器。<br>
+        • 本课表依据班级<b>最新课程表</b>录入，共 <b id="nc-count">0</b> 门课程、<b id="nt-count">0</b> 位教师。<br>
+        • 上课时间依据《日照科技职业学院上课时间安排》设置：第一节 08:10 开始、晚自习 19:30 - 20:40。<br>
+        • 理论课 / 实训课上课地点已按最新课表填入，点击任意地点格即可修改，数据仅保存在本机浏览器。<br>
+        • 星期四第 5-8 节在原表中以<b>黄色底纹</b>标记但未填写课程，已按「待定」呈现，可点击自行补录。<br>
+        • <b>已上 / 剩余学时</b>按「一个时段 = 2 学时」计算，单双周课程只统计实际开课的周次，并以每次课的<b>下课时间</b>为界，页面每秒自动刷新。<br>
+        • <b>下节课倒计时</b>精确到秒，可跨天向后查找最多 14 天，周末与调休自动跳过无课日。<br>
         • 所有个性化设置（主题、收藏、地点、备注、周次）均保存在本地 localStorage，不会上传。
       </div>
       <div class="btn-row" style="margin-top:14px">
@@ -819,37 +874,75 @@ var DAY_SHORT = ['一','二','三','四','五'];
 var DAY_RGB = ['59,139,255','122,92,255','52,199,89','255,159,10','255,45,85'];
 
 var SLOTS = [
-  {id:'1-2', label:'第1-2节', short:'1-2', start:'08:00', end:'09:40'},
+  {id:'1-2', label:'第1-2节', short:'1-2', start:'08:10', end:'09:40'},
   {id:'3-4', label:'第3-4节', short:'3-4', start:'10:00', end:'11:40'},
   {id:'5-6', label:'第5-6节', short:'5-6', start:'14:00', end:'15:40'},
   {id:'7-8', label:'第7-8节', short:'7-8', start:'16:00', end:'17:40'}
 ];
 
-/* 课程数据（严格依据课表图片录入）
+/* 学校作息（依据《日照科技职业学院上课时间安排》）
+   预备铃 08:00 / 13:55；晚自习 19:30-20:40 */
+var BELL_TIMES = [
+  {n:'第一节', s:'08:10', e:'08:50'},
+  {n:'第二节', s:'09:00', e:'09:40'},
+  {n:'第三节', s:'10:00', e:'10:45'},
+  {n:'第四节', s:'10:55', e:'11:40'},
+  {n:'第五节', s:'14:00', e:'14:45'},
+  {n:'第六节', s:'14:55', e:'15:40'},
+  {n:'第七节', s:'16:00', e:'16:45'},
+  {n:'第八节', s:'16:55', e:'17:40'},
+  {n:'晚自习', s:'19:30', e:'20:40'}
+];
+
+/* 课程数据（严格依据最新课表图片录入）
    parity: all / odd(单周) / even(双周) */
 var COURSES = [
-  {id:'it',     day:0, slot:'5-6', name:'信息技术',     teacher:'付杰',   from:4,  to:16, parity:'all',  rgb:'127,207,168'},
-  {id:'pe',     day:0, slot:'7-8', name:'体育与健康',   teacher:'张鹏',   from:4,  to:16, parity:'all',  rgb:'148,156,170'},
-  {id:'iec',    day:1, slot:'7-8', name:'创新创业',     teacher:'魏淑苑', from:4,  to:16, parity:'odd',  rgb:'140,158,245'},
-  {id:'psy',    day:1, slot:'7-8', name:'心理健康教育', teacher:'王金琦', from:4,  to:16, parity:'even', rgb:'193,176,240'},
-  {id:'math',   day:2, slot:'1-2', name:'应用数学',     teacher:'卢晓冉', from:4,  to:16, parity:'all',  rgb:'120,212,190'},
-  {id:'moral',  day:2, slot:'3-4', name:'思想道德与法治', teacher:'宋丽丽', from:4, to:12, parity:'all',  rgb:'245,158,180'},
-  {id:'labor',  day:2, slot:'3-4', name:'劳动教育',     teacher:'宋丽丽', from:13, to:16, parity:'all',  rgb:'242,178,124'},
-  {id:'policy', day:3, slot:'1-2', name:'形势与政策',   teacher:'蔡宁',   from:10, to:13, parity:'all',  rgb:'124,205,220'},
-  {id:'safety', day:3, slot:'1-2', name:'国家安全',     teacher:'蔡宁',   from:14, to:15, parity:'all',  rgb:'118,176,236'},
-  {id:'eng',    day:4, slot:'3-4', name:'实用英语',     teacher:'陈雨琳', from:4,  to:16, parity:'all',  rgb:'240,204,110'}
+  {id:'it',    day:0, slot:'5-6', name:'信息技术',       teacher:'付杰',   from:4,  to:16, parity:'all',  rgb:'127,199,132'},
+  {id:'pe',    day:0, slot:'7-8', name:'体育与健康',     teacher:'张鹏',   from:4,  to:16, parity:'all',  rgb:'146,156,172'},
+  {id:'dba1',  day:1, slot:'1-2', name:'数据库管理与应用', teacher:'刘卫红', from:1,  to:16, parity:'all',  rgb:'228,82,100'},
+  {id:'net1',  day:1, slot:'3-4', name:'计算机网络基础', teacher:'于化星', from:1,  to:16, parity:'all',  rgb:'242,196,26'},
+  {id:'c1',    day:1, slot:'5-6', name:'C语言程序设计',  teacher:'李竹健', from:1,  to:16, parity:'all',  rgb:'46,186,178'},
+  {id:'iec',   day:1, slot:'7-8', name:'创新创业',       teacher:'魏淑菡', from:4,  to:16, parity:'odd',  rgb:'112,142,224'},
+  {id:'psy',   day:1, slot:'7-8', name:'心理健康教育',   teacher:'王金瑞', from:4,  to:16, parity:'even', rgb:'162,138,232'},
+  {id:'moral', day:2, slot:'3-4', name:'思想道德与法治', teacher:'宋丽霞', from:4,  to:12, parity:'all',  rgb:'234,108,148'},
+  {id:'labor', day:2, slot:'3-4', name:'劳动教育',       teacher:'宋丽霞', from:13, to:16, parity:'all',  rgb:'240,152,72'},
+  {id:'dba2',  day:2, slot:'7-8', name:'数据库管理与应用', teacher:'刘卫红', from:1,  to:16, parity:'all',  rgb:'228,82,100'},
+  {id:'policy',day:3, slot:'1-2', name:'形势与政策',     teacher:'秦宁',   from:10, to:13, parity:'all',  rgb:'72,184,196'},
+  {id:'safety',day:3, slot:'1-2', name:'国家安全',       teacher:'秦宁',   from:14, to:15, parity:'all',  rgb:'96,150,228'},
+  {id:'c2',    day:3, slot:'3-4', name:'C语言程序设计',  teacher:'李竹健', from:1,  to:16, parity:'all',  rgb:'46,186,178'},
+  {id:'math',  day:4, slot:'1-2', name:'应用数学',       teacher:'卢晓冉', from:4,  to:16, parity:'all',  rgb:'62,186,168'},
+  {id:'eng',   day:4, slot:'3-4', name:'实用英语',       teacher:'陈雨琳', from:4,  to:16, parity:'all',  rgb:'196,164,102'},
+  {id:'net2',  day:4, slot:'5-6', name:'计算机网络基础', teacher:'于化星', from:1,  to:16, parity:'all',  rgb:'242,196,26'}
 ];
 
 /* 原表中以黄色底纹标记、未填写课程的时段 */
 var TBD = [
-  {day:2, slot:'5-6'},
-  {day:2, slot:'7-8'},
   {day:3, slot:'5-6'},
   {day:3, slot:'7-8'}
 ];
 
+/* 上课地点（依据最新课表录入，用户可在页面内覆盖） */
+var DEFAULT_ROOMS = {
+  it:    {theory:'07105', lab:'第4微机室'},
+  pe:    {theory:'',      lab:'体育场/馆'},
+  dba1:  {theory:'07205', lab:'第5微机室'},
+  net1:  {theory:'07205', lab:'07201'},
+  c1:    {theory:'08103', lab:'第6微机室'},
+  iec:   {theory:'07107', lab:''},
+  psy:   {theory:'07107', lab:''},
+  moral: {theory:'07105', lab:''},
+  labor: {theory:'07105', lab:''},
+  dba2:  {theory:'07205', lab:'第5微机室'},
+  policy:{theory:'07101', lab:''},
+  safety:{theory:'07101', lab:''},
+  c2:    {theory:'08103', lab:'第6微机室'},
+  math:  {theory:'07107', lab:''},
+  eng:   {theory:'07107', lab:''},
+  net2:  {theory:'07205', lab:'07201'}
+};
+
 var DEFAULT_SLOT_TIMES = {
-  '1-2':{start:'08:00',end:'09:40'},
+  '1-2':{start:'08:10',end:'09:40'},
   '3-4':{start:'10:00',end:'11:40'},
   '5-6':{start:'14:00',end:'15:40'},
   '7-8':{start:'16:00',end:'17:40'}
@@ -863,7 +956,8 @@ var LS_KEY = 'wl2604.schedule.v1';
 function defaults(){
   return {
     theme:'auto',
-    termStart:'2026-09-07',
+    termStart:'2026-08-24',
+    calVer:2,
     weekOverride:null,
     view:'schedule',
     filter:'all',
@@ -872,7 +966,7 @@ function defaults(){
     showTbd:true,
     layout:'cards',
     fav:[],
-    rooms:{},     // { courseId: {theory:'', lab:''} }
+    rooms:JSON.parse(JSON.stringify(DEFAULT_ROOMS)),  // { courseId: {theory:'', lab:''} }
     notes:{},     // { courseId: '' }
     tbdNames:{},  // { 'day:slot': '' }
     slotTimes:JSON.parse(JSON.stringify(DEFAULT_SLOT_TIMES))
@@ -896,8 +990,20 @@ function load(){
     }
     if(!Array.isArray(d.fav)) d.fav = [];
     if(typeof d.rooms !== 'object' || !d.rooms) d.rooms = {};
+    /* 以课表自带地点为底，用户自己填过的覆盖上去 */
+    var mergedRooms = JSON.parse(JSON.stringify(DEFAULT_ROOMS));
+    for(var cid in d.rooms){
+      if(!Object.prototype.hasOwnProperty.call(d.rooms, cid)) continue;
+      mergedRooms[cid] = Object.assign({}, mergedRooms[cid] || {}, d.rooms[cid] || {});
+    }
+    d.rooms = mergedRooms;
     if(typeof d.notes !== 'object' || !d.notes) d.notes = {};
     if(typeof d.tbdNames !== 'object' || !d.tbdNames) d.tbdNames = {};
+    /* 学期起算日口径迁移：学校按 2026-08-24 起算（2026-10-05 起为第 7 周） */
+    if(obj.calVer !== 2){
+      if(d.termStart === '2026-09-07' && !d.weekOverride) d.termStart = '2026-08-24';
+      d.calVer = 2;
+    }
     state = d;
   }catch(e){ state = defaults(); }
 }
@@ -1183,7 +1289,7 @@ function renderSchedule(){
       if(visible === 0 && tbd){
         var key = d + ':' + sl.id;
         var nm = (state.tbdNames && state.tbdNames[key]) || '';
-        rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span></div>'
+        rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span><span class="st et">' + slotTimes(sl.id).end + '</span></div>'
              + '<div class="cell"><div class="tbd" data-act="edit-tbd" data-key="' + key + '">' + (nm ? esc(nm) : '待定') + '<small>原表黄色标记 · 点击补录</small></div></div>'
              + '<div class="cell meta" style="opacity:.5"><div class="meta-item empty">—</div></div>'
              + '<div class="cell meta" style="opacity:.5"><div class="meta-item empty">—</div></div>'
@@ -1191,14 +1297,14 @@ function renderSchedule(){
         continue;
       }
       if(visible === 0){
-        rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span></div>'
+        rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span><span class="st et">' + slotTimes(sl.id).end + '</span></div>'
              + '<div class="cell"><div class="meta-item empty" style="height:100%">空闲</div></div>'
              + '<div class="cell meta"><div class="meta-item empty">—</div></div>'
              + '<div class="cell meta"><div class="meta-item empty">—</div></div>'
              + '<div class="cell meta"><div class="meta-item empty">—</div></div>';
         continue;
       }
-      rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span></div>'
+      rows += '<div class="cell slot">' + sl.short + '<span class="st">' + slotTimes(sl.id).start + '</span><span class="st et">' + slotTimes(sl.id).end + '</span></div>'
            +  '<div class="cell">' + coursesHTML + '</div>'
            +  '<div class="cell meta">' + teacherCellHTML(list.filter(function(c){ return !state.hideInactive || isActiveInWeek(c, week); }), week) + '</div>'
            +  '<div class="cell meta">' + roomCellHTML(list, week, 'theory') + '</div>'
@@ -1261,8 +1367,9 @@ function renderSchedule(){
   var odd = isOddWeek(week);
   $('week-label').textContent = '第 ' + week + ' 周 · ' + (odd ? '单周' : '双周');
   $('week-label').classList.toggle('manual', state.weekOverride !== null);
-  $('brand-sub').textContent = '第 ' + week + ' 周 · ' + (odd ? '单周' : '双周') + ' · ' + TERM_NAME;
-  $('tt-sub').textContent = '第 ' + week + ' 周 · 单双周已自动标注';
+  var bs = $('brand-sub');
+  if(bs) bs.textContent = '第 ' + week + ' 周 · ' + (odd ? '单周' : '双周') + ' · ' + TERM_NAME;
+  $('tt-sub').textContent = '第 ' + week + ' 周 · ' + (odd ? '单周' : '双周') + ' · 单双周已自动标注';
 
   renderChips();
   syncSwitches();
@@ -1425,54 +1532,199 @@ function nextSchoolDay(now){
     var d = addDays(base, i);
     var idx = weekdayIdx(d);
     if(idx <= 4){
-      return {idx:idx, label:(d.getMonth()+1) + '月' + d.getDate() + '日'};
+      return {idx:idx, label:(d.getMonth()+1) + '月' + d.getDate() + '日', date:d};
     }
   }
-  return {idx:0, label:'下周一'};
+  return {idx:0, label:'下周一', date:addDays(base, 1)};
 }
+
+/* ---------- 上课时刻推算（倒计时 / 学时进度 共用） ---------- */
+function startOfDay(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function atTime(day, hhmm){
+  var m = hhmm2min(hhmm);
+  if(m === null) return null;
+  return new Date(day.getFullYear(), day.getMonth(), day.getDate(), Math.floor(m/60), m%60, 0, 0);
+}
+/* 相对「今天」偏移 offset 天的那一天属于第几教学周 */
+function weekAtOffset(offset){
+  var w = currentWeek();
+  var t = startOfDay(new Date());
+  for(var i=1;i<=offset;i++){ if(weekdayIdx(addDays(t, i)) === 0) w++; }
+  for(var j=1;j<=-offset;j++){ if(weekdayIdx(addDays(t, -j)) === 0) w--; }
+  return w;
+}
+/* 正在上的课 / 下节课（可跨天，最多向后找 14 天） */
+function liveClassInfo(now){
+  var today = startOfDay(now);
+  var nowT = now.getTime();
+  var cur = null, nxt = null;
+  for(var k=0; k<=14; k++){
+    var d = addDays(today, k);
+    var di = weekdayIdx(d);
+    if(di > 4) continue;
+    var w = weekAtOffset(k);
+    var list = [];
+    for(var i=0;i<COURSES.length;i++){
+      var c = COURSES[i];
+      if(c.day !== di) continue;
+      if(!isActiveInWeek(c, w)) continue;
+      var st = slotTimes(c.slot);
+      var s = atTime(d, st.start), e = atTime(d, st.end);
+      if(!s || !e) continue;
+      list.push({c:c, slot:slotOf(c.slot), week:w, start:s, end:e, date:d, offset:k});
+    }
+    list.sort(function(a,b){ return a.start - b.start; });
+    for(var j=0;j<list.length;j++){
+      var it = list[j];
+      if(k === 0){
+        if(nowT >= it.start.getTime() && nowT < it.end.getTime()){ cur = it; break; }
+        if(it.start.getTime() > nowT){ nxt = it; break; }
+      } else { nxt = it; break; }
+    }
+    if(nxt) break;
+  }
+  return {cur:cur, nxt:nxt};
+}
+function dayLabelFor(offset, date){
+  if(offset === 0) return '今天';
+  if(offset === 1) return '明天';
+  if(offset === 2) return '后天';
+  return DAYS[weekdayIdx(date)];
+}
+function pad2(n){ return ('0' + n).slice(-2); }
+/* 统一输出 时:分:秒 */
+function fmtHMS(sec){
+  if(!isFinite(sec) || sec < 0) sec = 0;
+  sec = Math.floor(sec);
+  return pad2(Math.floor(sec/3600)) + ':' + pad2(Math.floor((sec%3600)/60)) + ':' + pad2(sec%60);
+}
+function fmtDur(sec){ return fmtHMS(sec); }
+/* 上课地点：优先理论教室，其次实训场地 */
+function roomText(c){
+  var r = state.rooms[c.id] || {};
+  return r.theory || r.lab || '';
+}
+/* 格式化地点：以“第X节 时间”为准 */
+function slotRangeText(slotId){
+  var t = slotTimes(slotId);
+  return t.start + ' - ' + t.end;
+}
+
 function updateCountdown(){
-  var el = $('cd-text'), nm = $('cd-name');
+  var el = $('cd-text'), nm = $('cd-name'), tm = $('cd-timer');
   if(!el) return;
   var now = new Date();
-  var week = currentWeek();
-  var dayIdx = weekdayIdx(now);
-  if(dayIdx > 4){
-    var nx = nextSchoolDay(now);
-    el.innerHTML = '周末愉快，下一上课日为 <em>' + nx.label + '</em>';
-    nm.textContent = DAYS[nx.idx];
-    return;
-  }
-  var list = buildTodayList(dayIdx, week);
-  var nowMin = now.getHours()*60 + now.getMinutes();
-  var nowSec = nowMin*60 + now.getSeconds();
-  var cur = null, nxt = null;
-  for(var i=0;i<list.length;i++){
-    var it = list[i];
-    if(nowMin >= it.start && nowMin < it.end){ cur = it; }
-    else if(it.start > nowMin && !nxt){ nxt = it; }
-  }
+  var info = liveClassInfo(now);
+  var cur = info.cur, nxt = info.nxt;
+  var dot = document.querySelector('.cd-dot');
+
   if(cur){
-    var left = cur.end*60 - nowSec;
-    el.innerHTML = '正在上课 · <em>' + esc(cur.c.name) + '</em> 还剩 ' + fmtDur(left);
-    nm.textContent = esc(cur.c.teacher) + ' · ' + slotTimes(cur.slot.id).end + ' 下课';
+    var rt = roomText(cur.c);
+    el.innerHTML = '正在上课 · <em>' + esc(cur.c.name) + '</em>';
+    nm.textContent = esc(cur.c.teacher) + ' · ' + slotTimes(cur.c.slot).end + ' 下课'
+      + (rt ? ' · ' + rt : '');
+    if(tm){ tm.textContent = fmtHMS((cur.end.getTime() - now.getTime())/1000); tm.classList.remove('off'); }
+    if(dot) dot.style.background = '#34c759';
   } else if(nxt){
-    var left2 = nxt.start*60 - nowSec;
-    el.innerHTML = '下节课 <em>' + esc(nxt.c.name) + '</em> ' + fmtDur(left2) + '后开始';
-    nm.textContent = slotTimes(nxt.slot.id).start + ' · ' + esc(nxt.c.teacher) + ' · 第' + nxt.slot.short + '节';
+    var rt2 = roomText(nxt.c);
+    el.innerHTML = '距离下节课 · <em>' + esc(nxt.c.name) + '</em>';
+    nm.textContent = dayLabelFor(nxt.offset, nxt.date) + ' ' + slotTimes(nxt.c.slot).start
+      + ' · ' + esc(nxt.c.teacher) + ' · 第 ' + nxt.slot.short + ' 节'
+      + (rt2 ? ' · ' + rt2 : '');
+    if(tm){ tm.textContent = fmtHMS((nxt.start.getTime() - now.getTime())/1000); tm.classList.remove('off'); }
+    if(dot) dot.style.background = '#ff9f0a';
   } else {
-    el.innerHTML = '今天的课程已全部结束，好好休息 ✨';
-    nm.textContent = list.length ? ('共 ' + list.length + ' 节') : '今日无课';
+    el.innerHTML = '未来两周暂无课程安排';
+    nm.textContent = '';
+    if(tm){ tm.textContent = '--:--:--'; tm.classList.add('off'); }
+    if(dot) dot.style.background = '#8e99ab';
   }
-}
-function fmtDur(sec){
-  if(sec < 0) sec = 0;
-  var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
-  if(h > 0) return h + ' 小时 ' + m + ' 分';
-  if(m > 0) return m + ' 分 ' + ('0'+s).slice(-2) + ' 秒';
-  return s + ' 秒';
+  syncProgress();
 }
 function startTicker(){ stopTicker(); ticker = setInterval(updateCountdown, 1000); }
 function stopTicker(){ if(ticker){ clearInterval(ticker); ticker = null; } }
+
+/* ---------- 学时进度：已上 / 剩余 ---------- */
+/* 某门课整学期的学时总数（精确按单双周逐周计数，一个时段 = 2 学时） */
+function courseHours(c){
+  var n = 0;
+  for(var w=c.from; w<=c.to; w++){
+    if(c.parity === 'odd'  && !isOddWeek(w)) continue;
+    if(c.parity === 'even' &&  isOddWeek(w)) continue;
+    n += 2;
+  }
+  return n;
+}
+function computeProgress(){
+  var now = new Date();
+  var nowT = now.getTime();
+  var wk = currentWeek();
+  var todayIdx = weekdayIdx(now);
+  var byId = {}, done = 0, all = 0;
+  for(var i=0;i<COURSES.length;i++){
+    var c = COURSES[i];
+    var d1 = 0, a1 = courseHours(c);
+    for(var w=c.from; w<=c.to; w++){
+      if(c.parity === 'odd'  && !isOddWeek(w)) continue;
+      if(c.parity === 'even' &&  isOddWeek(w)) continue;
+      var off = (w - wk) * 7 + c.day - todayIdx; /* 该次课距今多少天 */
+      if(off < -400 || off > 400) continue;
+      var e = atTime(addDays(startOfDay(now), off), slotTimes(c.slot).end);
+      if(e && e.getTime() <= nowT) d1 += 2;
+    }
+    byId[c.id] = {done:d1, all:a1};
+    done += d1; all += a1;
+  }
+  return {byId:byId, done:done, left:all-done, all:all,
+          pct: all ? Math.round(done/all*1000)/10 : 0};
+}
+var lastProgKey = '';
+function renderProgressFull(P){
+  if(!$('prog-fill')) return;
+  $('prog-done').textContent = P.done;
+  $('prog-left').textContent = P.left;
+  $('prog-all').textContent  = P.all;
+  $('prog-pct').textContent  = P.pct + '%';
+  $('prog-fill').style.width = P.pct + '%';
+  $('prog-sub').textContent  = '整学期 ' + P.all + ' 学时 · 已完成 ' + P.pct + '%';
+  var lg = '';
+  for(var i=0;i<COURSES.length;i++){
+    var c = COURSES[i], v = P.byId[c.id] || {done:0, all:0};
+    if(!v.all) continue;
+    var pp = Math.round(v.done/v.all*100);
+    lg += '<div class="pl-row" style="--rgb:' + c.rgb + '">'
+       +  '<span class="pl-dot"></span>'
+       +  '<span class="pl-name">' + esc(c.name) + '<span style="color:var(--text-3);font-weight:600;margin-left:6px">' + DAY_SHORT[c.day] + ' 第' + c.slot + '节</span></span>'
+       +  '<span class="pl-bar"><i style="width:' + pp + '%"></i></span>'
+       +  '<span class="pl-val">' + v.done + ' / ' + v.all + '</span></div>';
+  }
+  $('prog-list').innerHTML = lg;
+}
+function renderProgressMini(P){
+  if(!$('prog-fill2')) return;
+  $('prog-done2').textContent = P.done;
+  $('prog-left2').textContent = P.left;
+  $('prog-all2').textContent  = P.all;
+  $('prog-pct2').textContent  = P.pct + '%';
+  $('prog-fill2').style.width = P.pct + '%';
+  var s2 = $('prog-sub2');
+  if(s2) s2.textContent = '已完成 ' + P.pct + '% · 还剩 ' + P.left + ' 学时';
+}
+/* 每秒被调用：只有进度真的变了才重绘 */
+function syncProgress(){
+  var P = computeProgress();
+  var key = P.done + '/' + P.all;
+  if(key === lastProgKey) return;
+  lastProgKey = key;
+  renderProgressFull(P);
+  renderProgressMini(P);
+}
+function renderProgress(){
+  var P = computeProgress();
+  lastProgKey = P.done + '/' + P.all;
+  renderProgressFull(P);
+  renderProgressMini(P);
+}
 
 /* =========================================================
    10. 统计视图
@@ -1497,11 +1749,14 @@ function renderStats(){
   var courseCount = Object.keys(names).length;
   var teacherCount = Object.keys(teachers).length;
 
+  var P = computeProgress();
   var cards = [
-    {lb:'本周学时', v:active.length*2, u:'学时', ex:'共 ' + active.length + ' 节课', rgb:'59,139,255', i:'clock'},
-    {lb:'课程总数', v:courseCount, u:'门', ex:'全部学期开设', rgb:'122,92,255', i:'book'},
-    {lb:'授课教师', v:teacherCount, u:'位', ex:'含单双周教师', rgb:'52,199,89', i:'user'},
-    {lb:'最繁忙一天', v:perDay[busiest], u:'学时', ex:DAYS[busiest], rgb:'255,159,10', i:'chart'}
+    {lb:'已上学时', v:P.done,          u:'学时', ex:'已完成 ' + P.pct + '%', rgb:'47,191,95',  i:'check'},
+    {lb:'剩余学时', v:P.left,          u:'学时', ex:'整学期共 ' + P.all + ' 学时', rgb:'255,159,10', i:'clock'},
+    {lb:'本周学时', v:active.length*2, u:'学时', ex:'共 ' + active.length + ' 节课', rgb:'59,139,255', i:'chart'},
+    {lb:'课程总数', v:courseCount,     u:'门',   ex:'全部学期开设', rgb:'122,92,255', i:'book'},
+    {lb:'授课教师', v:teacherCount,    u:'位',   ex:'含单双周教师', rgb:'52,199,89',  i:'user'},
+    {lb:'最繁忙一天', v:perDay[busiest], u:'学时', ex:DAYS[busiest], rgb:'255,45,85', i:'list'}
   ];
   var ch = '';
   for(var c=0;c<cards.length;c++){
@@ -1517,9 +1772,7 @@ function renderStats(){
   var totals = {};
   for(var d=0; d<COURSES.length; d++){
     var co = COURSES[d];
-    var span = co.to - co.from + 1;
-    if(co.parity !== 'all') span = Math.ceil(span/2);
-    var wks = span * 2; /* 学时 */
+    var wks = courseHours(co); /* 学时，与「学时进度」同一口径 */
     if(!totals[co.name]){
       totals[co.name] = {value:wks, rgb:co.rgb, teacher:co.teacher};
     } else {
@@ -1605,6 +1858,9 @@ function renderStats(){
   }
   $('free').innerHTML = free || '<div class="dc-empty">本周课时已排满</div>';
   $('free-sub').textContent = '第 ' + week + ' 周 · 空闲 ' + freeCount + ' 个时段（共 20）';
+
+  /* 学时进度：已上 / 剩余 */
+  renderProgress();
 }
 
 /* =========================================================
@@ -1644,6 +1900,14 @@ function renderSettings(){
        +  '<input class="set-input" type="time" value="' + t.end + '" data-act="time" data-slot="' + sl.id + '" data-part="end" style="width:118px"></div>';
   }
   $('time-pairs').innerHTML = tp;
+
+  var bg = '';
+  for(var b=0;b<BELL_TIMES.length;b++){
+    var bt = BELL_TIMES[b];
+    bg += '<div class="tp"><span class="n">' + bt.n + '</span>'
+       +  '<span style="font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.2px">' + bt.s + ' — ' + bt.e + '</span></div>';
+  }
+  $('bell-grid').innerHTML = bg;
 
   var names = {}, teachers = {};
   for(var k=0;k<COURSES.length;k++){ names[COURSES[k].name] = 1; teachers[COURSES[k].teacher] = 1; }
